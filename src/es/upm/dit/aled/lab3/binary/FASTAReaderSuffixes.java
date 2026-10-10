@@ -44,6 +44,7 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	 * Helper method that creates a array of integers that contains the positions of
 	 * all suffixes, sorted alphabetically by the suffix.
 	 */
+	
 	private void sort() {
 		// Instantiate the external SuffixComparator, passing 'this' (the reader)
 		// so it can access the content and validBytes fields.
