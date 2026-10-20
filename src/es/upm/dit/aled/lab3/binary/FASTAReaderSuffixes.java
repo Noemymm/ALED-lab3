@@ -78,6 +78,18 @@ public class FASTAReaderSuffixes extends FASTAReader {
 	 * @return All the positions of the first character of every occurrence of the
 	 *         pattern in the data.
 	 */
+	public boolean sufijoEncontrado(int posSuffix,byte[] pattern) {
+		boolean found = true; 
+		for(int i= 0; i<pattern.length; i++) {
+			if(posSuffix+i+pattern.length>content.length){
+				return false;
+			}
+			if(pattern[i]!=content[posSuffix+i]) {
+				found = false;
+				break;
+			}
+		} return found;
+	}
 	@Override
 	public List<Integer> search(byte[] pattern) {
 		// TODO
@@ -101,10 +113,18 @@ public class FASTAReaderSuffixes extends FASTAReader {
 			}
 			if (found) {
 				res.add(posSuffix);
-				boolean match=true;
-				for(int j=m; j<suffixes.length;j++){
-					
-				return res;
+				for(int j=m++; j<suffixes.length; j++) {		
+					if(!sufijoEncontrado(suffixes[j].suffixIndex, pattern)) {
+						break;
+					}
+					res.add(suffixes[j].suffixIndex);
+				}
+				for(int j=m--; j>0; j--) {	
+					if(!sufijoEncontrado(suffixes[j].suffixIndex, pattern)) {
+						break;
+					}
+					res.add(suffixes[j].suffixIndex);	
+				}
 			}
 			if (!found) {
 				if(pattern[posDif]<content[posSuffix+posDif]) {
@@ -117,6 +137,7 @@ public class FASTAReaderSuffixes extends FASTAReader {
 		}
 		return res;
 	}
+	
 
 	public static void main(String[] args) {
 		long t1 = System.nanoTime();
